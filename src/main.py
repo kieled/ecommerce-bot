@@ -13,7 +13,7 @@ def main():
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         stdin=subprocess.PIPE,
-        start_new_session=True
+        start_new_session=True,
     )
     time.sleep(1)
     output = process.stdout.readline()
@@ -21,12 +21,7 @@ def main():
 
     print(url)
 
-    app.run_webhook(
-        listen='0.0.0.0',
-        port='8000',
-        secret_token='228322aza',
-        webhook_url=url
-    )
+    app.run_webhook(listen='0.0.0.0', port='8000', secret_token='228322aza', webhook_url=url)
 
 
 if __name__ == "__main__":

@@ -9,9 +9,7 @@ from config import settings
 def build():
     filterwarnings(action="ignore", message=r".*CallbackQueryHandler", category=PTBUserWarning)
 
-    app = ApplicationBuilder().token(
-        settings.TG_BOT_TOKEN
-    ).build()
+    app = ApplicationBuilder().token(settings.TG_BOT_TOKEN).build()
 
     app.add_handler(handlers.start_handler)
     app.add_handler(handlers.find_handler)

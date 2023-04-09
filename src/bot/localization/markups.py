@@ -8,4 +8,3 @@ INST = 'Наш Instagram'
 WEBSITE = 'Наш сайт'
 SUPPORT = '👨‍💻Поддержка'
 CANCEL = '❌Отменить'
-

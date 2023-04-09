@@ -24,15 +24,9 @@ class CustomerAddress(Base):
     user_id: Mapped[int | None] = mapped_column(ForeignKey('users.id'))
     temp_user_id: Mapped[str | None]
 
-    user: Mapped['User'] = relationship(
-        lazy=True,
-        back_populates='addresses'
-    )
+    user: Mapped['User'] = relationship(lazy=True, back_populates='addresses')
 
-    orders: Mapped[list['Order']] = relationship(
-        lazy=True,
-        back_populates='customer_address'
-    )
+    orders: Mapped[list['Order']] = relationship(lazy=True, back_populates='customer_address')
 
 
 class Order(Base):
@@ -50,23 +44,11 @@ class Order(Base):
     product_size_id: Mapped[int | None] = mapped_column(ForeignKey('product_size.id'))
     product_stock_id: Mapped[int | None] = mapped_column(ForeignKey('product_stock.id'))
 
-    product_size: Mapped['ProductSize'] = relationship(
-        lazy=True
-    )
-    product_stock: Mapped['ProductStock'] = relationship(
-        lazy=True
-    )
-    product: Mapped['Product'] = relationship(
-        lazy=True
-    )
-    customer_address: Mapped['CustomerAddress'] = relationship(
-        back_populates='orders',
-        lazy=True
-    )
-    transaction: Mapped['Transaction'] = relationship(
-        back_populates='orders',
-        lazy=True
-    )
+    product_size: Mapped['ProductSize'] = relationship(lazy=True)
+    product_stock: Mapped['ProductStock'] = relationship(lazy=True)
+    product: Mapped['Product'] = relationship(lazy=True)
+    customer_address: Mapped['CustomerAddress'] = relationship(back_populates='orders', lazy=True)
+    transaction: Mapped['Transaction'] = relationship(back_populates='orders', lazy=True)
 
 
 class ProductImage(Base):
@@ -77,10 +59,7 @@ class ProductImage(Base):
     path: Mapped[str]
     product_id: Mapped[int] = mapped_column(ForeignKey('products.id'))
 
-    product: Mapped['Product'] = relationship(
-        back_populates='images',
-        lazy=True
-    )
+    product: Mapped['Product'] = relationship(back_populates='images', lazy=True)
 
 
 class ProductSize(Base):
@@ -91,10 +70,7 @@ class ProductSize(Base):
     name: Mapped[str | None]
     product_stock_id: Mapped[int] = mapped_column(ForeignKey('product_stock.id'))
 
-    product_stock: Mapped['ProductStock'] = relationship(
-        lazy=True,
-        back_populates='sizes'
-    )
+    product_stock: Mapped['ProductStock'] = relationship(lazy=True, back_populates='sizes')
 
 
 class ProductStock(Base):
@@ -111,7 +87,7 @@ class ProductStock(Base):
         lazy=True,
         back_populates='product_stock',
         cascade="all, delete-orphan",
-        order_by='ProductSize.id'
+        order_by='ProductSize.id',
     )
 
 
@@ -124,10 +100,7 @@ class ProductParam(Base):
 
     product_id: Mapped[int] = mapped_column(ForeignKey('products.id'))
 
-    product: Mapped['Product'] = relationship(
-        lazy=True,
-        back_populates='params'
-    )
+    product: Mapped['Product'] = relationship(lazy=True, back_populates='params')
 
 
 class ProductCategory(Base):
@@ -152,25 +125,19 @@ class Product(Base):
     description: Mapped[str]
     updated_at: Mapped[datetime] = mapped_column(server_default=func.now())
 
-    category_id: Mapped[int | None] = mapped_column(ForeignKey('product_categories.id', ondelete='CASCADE'))
+    category_id: Mapped[int | None] = mapped_column(
+        ForeignKey('product_categories.id', ondelete='CASCADE')
+    )
 
     images: Mapped[list[ProductImage]] = relationship(
-        back_populates='product',
-        order_by='ProductImage.id',
-        lazy=True
+        back_populates='product', order_by='ProductImage.id', lazy=True
     )
-    category: Mapped[ProductCategory] = relationship(
-        lazy=True
-    )
+    category: Mapped[ProductCategory] = relationship(lazy=True)
     stocks: Mapped[list[ProductStock]] = relationship(
-        back_populates='product',
-        lazy=True,
-        cascade="all, delete-orphan"
+        back_populates='product', lazy=True, cascade="all, delete-orphan"
     )
     params: Mapped[list[ProductParam]] = relationship(
-        lazy=True,
-        back_populates='product',
-        cascade="all, delete-orphan"
+        lazy=True, back_populates='product', cascade="all, delete-orphan"
     )
 
     __mapper_args__ = {"eager_defaults": True}
@@ -189,29 +156,15 @@ class Transaction(Base):
     requisite_id: Mapped[int] = mapped_column(ForeignKey('requisites.id'))
     bank_number_id: Mapped[str | None]
 
-    updated_at: Mapped[datetime] = mapped_column(
-        server_default=func.now(),
-        onupdate=func.now()
-    )
+    updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
 
-    promo: Mapped['Promo'] = relationship(
-        lazy=True,
-        back_populates='transaction'
-    )
+    promo: Mapped['Promo'] = relationship(lazy=True, back_populates='transaction')
 
-    orders: Mapped[list['Order']] = relationship(
-        lazy=True,
-        back_populates='transaction'
-    )
+    orders: Mapped[list['Order']] = relationship(lazy=True, back_populates='transaction')
 
-    user: Mapped['User'] = relationship(
-        lazy=True,
-        back_populates='transactions'
-    )
+    user: Mapped['User'] = relationship(lazy=True, back_populates='transactions')
 
-    requisite: Mapped['Requisites'] = relationship(
-        lazy=True
-    )
+    requisite: Mapped['Requisites'] = relationship(lazy=True)
 
     __mapper_args__ = {"eager_defaults": True}
 
@@ -229,15 +182,9 @@ class User(Base):
     image_url: Mapped[str | None]
     first_name: Mapped[str | None]
 
-    addresses: Mapped[list[CustomerAddress]] = relationship(
-        lazy=True,
-        back_populates='user'
-    )
+    addresses: Mapped[list[CustomerAddress]] = relationship(lazy=True, back_populates='user')
 
-    transactions: Mapped[list[Transaction]] = relationship(
-        lazy=True,
-        back_populates='user'
-    )
+    transactions: Mapped[list[Transaction]] = relationship(lazy=True, back_populates='user')
 
 
 class RequisiteTypes(Base):
@@ -260,9 +207,7 @@ class Requisites(Base):
     detail: Mapped[str | None]
     is_active: Mapped[bool]
 
-    type: Mapped[RequisiteTypes] = relationship(
-        lazy=True
-    )
+    type: Mapped[RequisiteTypes] = relationship(lazy=True)
 
 
 class Settings(Base):
@@ -274,10 +219,7 @@ class Settings(Base):
     rub: Mapped[float] = mapped_column(default=0.0)
     admin_chat_id: Mapped[str | None]
 
-    updated_at: Mapped[datetime] = mapped_column(
-        server_default=func.now(),
-        onupdate=func.now()
-    )
+    updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
 
     __mapper_args__ = {"eager_defaults": True}
 
@@ -290,7 +232,5 @@ class Promo(Base):
     discount: Mapped[float]
 
     transaction: Mapped[Transaction] = relationship(
-        lazy=True,
-        back_populates='promo',
-        uselist=False
+        lazy=True, back_populates='promo', uselist=False
     )
