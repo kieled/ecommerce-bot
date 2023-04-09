@@ -1,0 +1,18 @@
+name: Telegram Bot CI/CD
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository code
+      uses: actions/checkout@v3
+    - name: Install flake
+      run: |
+        pip install flake8
+    - name: Test with flake8
+      run: |
+        cd src && python -m flake8
