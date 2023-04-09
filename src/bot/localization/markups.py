@@ -1,0 +1,11 @@
+ADD_NEW = '➕Добавить новый'
+TO_MAIN = '🏠На главную'
+BUY = '🛒Купить'
+SKIP = '⏩Пропустить'
+CONFIRM = '✅Оплачено'
+ID_SEARCH = '🔎Поиск по ID'
+INST = 'Наш Instagram'
+WEBSITE = 'Наш сайт'
+SUPPORT = '👨‍💻Поддержка'
+CANCEL = '❌Отменить'
+
