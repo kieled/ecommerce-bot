@@ -1,8 +1,9 @@
-from sqlalchemy import select, insert
-from sqlalchemy.orm import load_only, joinedload
-
 from db import CustomerAddress, User
-from bot.schemas import CreateCustomerSchema, CreateAddressSchema
+from sqlalchemy import insert, select
+from sqlalchemy.orm import joinedload, load_only
+
+from bot.schemas import CreateAddressSchema, CreateCustomerSchema
+
 from .helper import AppService
 
 
@@ -17,7 +18,7 @@ class CustomerService(AppService):
         sql = (
             select(User)
             .options(load_only(User.id), joinedload(User.addresses))
-            .where(User.telegram == str(customer_tg))
+            .where(User.telegram_chat_id == str(customer_tg))
         )
         data = (await self.db.execute(sql)).scalars().first()
         if not data:
@@ -31,6 +32,6 @@ class CustomerService(AppService):
         return customer_address_id
 
     async def get_customer(self, tg_chat_id: int) -> User | None:
-        sql = select(User).where(User.telegram == str(tg_chat_id))
+        sql = select(User).where(User.telegram_chat_id == str(tg_chat_id))
         customer_id = (await self.db.execute(sql)).scalars().first()
         return customer_id

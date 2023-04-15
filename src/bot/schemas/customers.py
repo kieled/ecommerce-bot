@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class CreateCustomerSchema(BaseModel):
-    telegram: str
+    telegram_chat_id: str
     instagram: str | None = None
     username: str | None = None
 

@@ -1,11 +1,12 @@
 from telegram import (
-    InlineKeyboardMarkup,
     InlineKeyboardButton,
-    WebAppInfo,
-    ReplyKeyboardMarkup,
+    InlineKeyboardMarkup,
     KeyboardButton,
+    ReplyKeyboardMarkup,
+    WebAppInfo,
 )
-from bot import schemas, callbacks, utils, localization
+
+from bot import callbacks, localization, schemas, utils
 
 
 def product_markup(product_id: int, address: int | None = None):

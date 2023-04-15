@@ -10,14 +10,34 @@ services:
 
   bot:
     build:
-      dockerfile: docker/Dockerfile.bot
+      dockerfile: docker/bot.Dockerfile
       context: .
+    depends_on:
+      - db
+      - tunnel
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app
+
+  api:
+    build:
+      dockerfile: docker/api.Dockerfile
+      context: .
+    ports:
+      - "8000:8000"
     depends_on:
       - db
     env_file:
       - .env
     volumes:
       - ./src:/app
+
+
+  tunnel:
+    image: efrecon/localtunnel:latest
+    command:
+      --local-host bot -p 8000 -s fdasdsfegsf342
 
 volumes:
   postgres_data:

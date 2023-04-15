@@ -1,16 +1,18 @@
+from db import session
 from telegram import Update
 from telegram.constants import ParseMode
 from telegram.ext import (
-    ContextTypes,
-    CommandHandler,
-    ConversationHandler,
     CallbackQueryHandler,
+    CommandHandler,
+    ContextTypes,
+    ConversationHandler,
     MessageHandler,
     filters,
 )
+
 from bot import callbacks, localization, markups, schemas, services, utils
+
 from .find_handler import check_address
-from db import session
 
 INST = range(1)
 
@@ -38,11 +40,11 @@ async def post_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if context.user_data.get('product_id'):
         return await check_address(update, context, product_id=context.user_data.pop('product_id'))
     else:
-        message_data = dict(
-            text=localization.welcome_message,
-            reply_markup=markups.welcome_markup,
-            parse_mode=ParseMode.MARKDOWN,
-        )
+        message_data = {
+            'text': localization.welcome_message,
+            'reply_markup': markups.welcome_markup,
+            'parse_mode': ParseMode.MARKDOWN,
+        }
         if update.callback_query:
             await update.effective_message.edit_text(**message_data)
         else:
@@ -54,7 +56,7 @@ async def save_inst(update: Update, context: ContextTypes.DEFAULT_TYPE):
     async with session() as s:
         await services.CustomerService(s).create(
             schemas.CreateCustomerSchema(
-                telegram=str(update.effective_chat.id),
+                telegram_chat_id=str(update.effective_chat.id),
                 instagram=update.effective_message.text,
                 username=update.effective_chat.username,
             )
@@ -66,7 +68,8 @@ async def skip_inst(update: Update, context: ContextTypes.DEFAULT_TYPE):
     async with session() as s:
         await services.CustomerService(s).create(
             schemas.CreateCustomerSchema(
-                telegram=str(update.effective_chat.id), username=update.effective_chat.username
+                telegram_chat_id=str(update.effective_chat.id),
+                username=update.effective_chat.username,
             )
         )
     return await post_start(update, context)

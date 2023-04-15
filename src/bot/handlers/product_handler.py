@@ -1,15 +1,17 @@
 import io
 import json
-from telegram import Update, ReplyKeyboardRemove
+
+from db import session
+from telegram import ReplyKeyboardRemove, Update
 from telegram.ext import (
-    ConversationHandler,
+    CallbackQueryHandler,
     ContextTypes,
+    ConversationHandler,
     MessageHandler,
     filters,
-    CallbackQueryHandler,
 )
-from bot import callbacks, utils, localization, schemas, services, markups
-from db import session
+
+from bot import callbacks, localization, markups, schemas, services, utils
 
 PAYMENT, CHECK = range(2)
 

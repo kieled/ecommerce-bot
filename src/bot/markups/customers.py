@@ -1,6 +1,7 @@
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton
-from bot import callbacks, localization
 from db import CustomerAddress
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+
+from bot import callbacks, localization
 
 
 def addresses_markup(addresses: list[CustomerAddress]):

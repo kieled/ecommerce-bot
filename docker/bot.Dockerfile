@@ -7,9 +7,7 @@ ENV PYTHONUNBUFFERED 1
 RUN pip install --upgrade pip
 RUN pip install poetry
 
-RUN apt-get update
-
 COPY pyproject.toml poetry.lock ./
 RUN poetry config virtualenvs.create false && poetry install --no-root
 
-CMD ["python", "main.py"]
+CMD ["python", "bot.py"]

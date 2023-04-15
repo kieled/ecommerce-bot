@@ -1,7 +1,14 @@
-from .enums import ProductStatusEnum, UserTypeEnum, TransactionStatusEnum, TransactionCurrencyEnum
 from datetime import datetime
+
 from sqlalchemy import ForeignKey, func
-from sqlalchemy.orm import relationship, declarative_base, mapped_column, Mapped
+from sqlalchemy.orm import Mapped, declarative_base, mapped_column, relationship
+
+from .enums import (
+    ProductStatusEnum,
+    TransactionCurrencyEnum,
+    TransactionStatusEnum,
+    UserTypeEnum,
+)
 
 Base = declarative_base()
 
@@ -21,8 +28,7 @@ class CustomerAddress(Base):
     last_name: Mapped[str]
     country: Mapped[str]
 
-    user_id: Mapped[int | None] = mapped_column(ForeignKey('users.id'))
-    temp_user_id: Mapped[str | None]
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
 
     user: Mapped['User'] = relationship(lazy=True, back_populates='addresses')
 
@@ -66,8 +72,7 @@ class ProductSize(Base):
     __tablename__ = 'product_size'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    size: Mapped[str]
-    name: Mapped[str | None]
+    name: Mapped[str]
     product_stock_id: Mapped[int] = mapped_column(ForeignKey('product_stock.id'))
 
     product_stock: Mapped['ProductStock'] = relationship(lazy=True, back_populates='sizes')
@@ -77,8 +82,7 @@ class ProductStock(Base):
     __tablename__ = 'product_stock'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str | None]
-    color: Mapped[str]
+    name: Mapped[str]
     image: Mapped[str]
     product_id: Mapped[int] = mapped_column(ForeignKey('products.id'))
 
@@ -108,7 +112,6 @@ class ProductCategory(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str]
-    slug: Mapped[str]
 
 
 class Product(Base):
@@ -118,12 +121,12 @@ class Product(Base):
 
     title: Mapped[str]
     status: Mapped[ProductStatusEnum] = mapped_column(default=ProductStatusEnum.created)
-    price_buy: Mapped[int] = mapped_column(default=0)
     price: Mapped[int] = mapped_column(default=0)
-    inst_url: Mapped[str | None]
     ali_url: Mapped[str | None]
     description: Mapped[str]
-    updated_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(
+        server_default=func.now(), server_onupdate=func.now()
+    )
 
     category_id: Mapped[int | None] = mapped_column(
         ForeignKey('product_categories.id', ondelete='CASCADE')
@@ -152,7 +155,6 @@ class Transaction(Base):
     promo_id: Mapped[int | None] = mapped_column(ForeignKey('promo_codes.id'))
     amount: Mapped[int]
     user_id: Mapped[int | None] = mapped_column(ForeignKey('users.id'))
-    temp_user_id: Mapped[str | None]
     requisite_id: Mapped[int] = mapped_column(ForeignKey('requisites.id'))
     bank_number_id: Mapped[str | None]
 
@@ -179,7 +181,6 @@ class User(Base):
     password: Mapped[str | None]
 
     telegram_chat_id: Mapped[str | None]
-    image_url: Mapped[str | None]
     first_name: Mapped[str | None]
 
     addresses: Mapped[list[CustomerAddress]] = relationship(lazy=True, back_populates='user')

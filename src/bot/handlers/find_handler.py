@@ -1,17 +1,21 @@
+from db import session
 from telegram import Update
 from telegram.error import BadRequest
 from telegram.ext import (
+    CallbackQueryHandler,
+    ContextTypes,
     ConversationHandler,
     MessageHandler,
     filters,
-    CallbackQueryHandler,
-    ContextTypes,
 )
-from bot import callbacks
-from db import session
-from bot import localization
-from bot import utils
-from bot.markups import back_main_markup, cancel_markup, product_markup, addresses_markup
+
+from bot import callbacks, localization, utils
+from bot.markups import (
+    addresses_markup,
+    back_main_markup,
+    cancel_markup,
+    product_markup,
+)
 from bot.services import CustomerService, ProductService
 
 ID, ADDRESS = range(2)

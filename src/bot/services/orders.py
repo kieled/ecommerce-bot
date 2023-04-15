@@ -1,7 +1,8 @@
+from db import Order
 from sqlalchemy import insert
 
-from db import Order
 from bot import schemas
+
 from .helper import AppService
 
 

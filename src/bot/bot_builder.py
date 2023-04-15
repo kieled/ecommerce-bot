@@ -1,9 +1,10 @@
-from telegram.ext import ApplicationBuilder
 from warnings import filterwarnings
+
+from config import settings
+from telegram.ext import ApplicationBuilder
 from telegram.warnings import PTBUserWarning
 
 from bot import handlers, utils
-from config import settings
 
 
 def build():

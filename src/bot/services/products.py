@@ -1,8 +1,8 @@
+from db import Product, ProductSize, ProductStock
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import load_only, joinedload
+from sqlalchemy.orm import joinedload, load_only
 from sqlalchemy.sql import Select
-from db import Product, ProductStock, ProductSize
 
 
 class ProductService:

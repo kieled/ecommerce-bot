@@ -1,7 +1,6 @@
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 from bot import callbacks, localization
-
 
 welcome_markup = InlineKeyboardMarkup(
     [
